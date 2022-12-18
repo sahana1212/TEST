@@ -37,7 +37,7 @@ module "application-subnets" {
   resource_group_name = "${azurerm_resource_group.resource_group.name}"
   location            = "${var.location}"
   tags                = "${merge(var.default_tags, map("type", "vmss"))}"
-  saname              = "${var.application}${var.environment}"
+  name                = "${var.name}"
   capacity            = "${var.capacity}"
   subnet_id           = "${module.application-subnets.vnet_subnets}"
 }
