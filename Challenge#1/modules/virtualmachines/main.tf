@@ -4,24 +4,24 @@ resource "azurerm_network_interface" "networkinterface" {
   resource_group_name = "${var.resource_group_name}"
 
   ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.example.id
+    name                          = "${var.ip_configuration_name}"
+    subnet_id                     = azurerm_subnet.networkinterface.id
     private_ip_address_allocation = "Dynamic"
   }
 }
 
-resource "azurerm_linux_virtual_machine" "example" {
+resource "azurerm_linux_virtual_machine" "virtualmachine" {
   name                = "example-machine"
-  resource_group_name = azurerm_resource_group.example.name
-  location            = azurerm_resource_group.example.location
-  size                = "Standard_F2"
-  admin_username      = "adminuser"
+  resource_group_name = "${var.resource_group_name}"
+  location            = "${var.location}"
+  size                = "${var.vmsize}"
+  admin_username      = "${var.admin_username}"
   network_interface_ids = [
-    azurerm_network_interface.example.id,
+    azurerm_network_interface.virtualmachine.id,
   ]
 
   admin_ssh_key {
-    username   = "adminuser"
+    username   = "${var.admin_username}"
     public_key = file("~/.ssh/id_rsa.pub")
   }
 
@@ -31,9 +31,9 @@ resource "azurerm_linux_virtual_machine" "example" {
   }
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+    publisher = "${var.source_image_publisher}"
+    offer     = "${var.source_image_offer}"
+    sku       = "${var.source_image_sku}"
+    version   = "${var.source_image_version}"
   }
 }
