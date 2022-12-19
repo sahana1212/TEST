@@ -1,4 +1,3 @@
-
 application = "app_name"
 environment = "dev" 
 location    = "easteurope"
